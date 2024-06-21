@@ -6,6 +6,8 @@ import com.institut.institut.repository.EleveRepo;
 import com.institut.institut.services.EleveService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EleveServiceImpl implements EleveService {
 
@@ -28,5 +30,10 @@ public class EleveServiceImpl implements EleveService {
         newEleve.setTelephone(eleve.getTelephone());
 
         return eleveRepo.saveAndFlush(newEleve);
+    }
+
+    @Override
+    public List<Eleve> getEleve() {
+        return eleveRepo.findAll();
     }
 }
