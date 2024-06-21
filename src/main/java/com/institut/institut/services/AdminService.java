@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface AdminService {
 
-     Admin addAdmin(AdminDto adminDto) throws GeneralException;
+     String addAdmin(AdminDto adminDto) throws GeneralException;
      AdminDto getAdminById(int adminId);
 }
