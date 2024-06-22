@@ -1,39 +1,46 @@
-package com.institut.institut.services.Impl;
+package com.institut.institut.services;
 
 import com.institut.institut.dto.AdminDto;
 import com.institut.institut.exception.GeneralException;
 import com.institut.institut.mapper.AdminMapper;
 import com.institut.institut.models.Admin;
 import com.institut.institut.repository.AdminRepo;
-import com.institut.institut.services.AdminService;
-import lombok.extern.java.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-public class AdminSeriveImpl implements AdminService {
+public class AdminSeriveImpl implements UserDetailsService {
 
+    @Autowired
     private AdminRepo adminRepo ;
 
+    @Autowired
     private AdminMapper adminMapper ;
 
+    @Autowired
     private PasswordEncoder passwordEncoder;
+
 
     private static final Logger log = LoggerFactory.getLogger(AdminSeriveImpl.class);
 
 
-    public AdminSeriveImpl( AdminRepo adminRepo , PasswordEncoder passwordEncoder, AdminMapper adminMapper){
-        this.adminRepo = adminRepo;
-        this.adminMapper = adminMapper;
-        this.passwordEncoder = passwordEncoder;
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<Admin> adminDetail = adminRepo.findByUsername(username);
+
+        return adminDetail.map(UserInfoDetails::new)
+                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé " + username));
     }
 
 
-    @Override
     public String addAdmin(AdminDto adminDto) throws GeneralException {
 
         Optional<Admin> existingAdmin = adminRepo.findByUsername(adminDto.getUsername());
@@ -54,8 +61,8 @@ public class AdminSeriveImpl implements AdminService {
         }
     }
 
-    @Override
     public AdminDto getAdminById(int adminId) {
         return null;
     }
+
 }

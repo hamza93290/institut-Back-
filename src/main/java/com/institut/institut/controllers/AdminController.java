@@ -2,7 +2,6 @@ package com.institut.institut.controllers;
 
 import com.institut.institut.dto.AdminDto;
 import com.institut.institut.exception.GeneralException;
-import com.institut.institut.services.AdminService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
