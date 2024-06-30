@@ -37,7 +37,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(ar -> ar.requestMatchers("/admin/addNewAdmin").permitAll())
+                .authorizeHttpRequests(ar -> ar.requestMatchers("/admin/addNewAdmin","eleve/save","/admin/generateToken", "admin/userdetails" , "eleve/get").permitAll())
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authenticationProvider(authenticationProvider())

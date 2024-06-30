@@ -40,6 +40,24 @@ public class AdminSeriveImpl implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé " + username));
     }
 
+    public AdminDto findUserByUsername(String username) {
+        try {
+            if (username != null && !username.isBlank()) {
+                Optional<Admin> foundUser = adminRepo.findByUsername(username);
+                Admin userInfo = foundUser.orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé " + username));
+                AdminDto userInfoDTO = adminMapper.toDto(userInfo);
+
+                return userInfoDTO;
+            } else {
+                log.error(String.format("Email invalide %s", username));
+                throw new IllegalArgumentException("Email invalide");
+            }
+        } catch (UsernameNotFoundException e) {
+            log.error(String.format("Utilisateur non trouvé : %s", e.getMessage()), e);
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public String addAdmin(AdminDto adminDto) throws GeneralException {
 
